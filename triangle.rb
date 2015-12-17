@@ -15,6 +15,20 @@
 #
 def triangle(a, b, c)
   # WRITE THIS CODE
+  unless a > 0 && b > 0 && c > 0
+    raise TriangleError.new("Sides cannot be negative") 
+  end
+
+  a_plus_b        = a + b
+  a_plus_c        = a + c
+  b_plus_c        = b + c
+
+  sides_sum_error = "The sum of two sides of a triangle must be greater than the third side"
+
+  raise TriangleError.new(sides_sum_error) if a_plus_b <= c
+  raise TriangleError.new(sides_sum_error) if a_plus_c <= b
+  raise TriangleError.new(sides_sum_error) if b_plus_c <= a
+
   if a == b && a == c
     :equilateral
   elsif a == b || a == c || b == c
