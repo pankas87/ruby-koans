@@ -31,6 +31,44 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 
 def score(dice)
   # You need to write this method
+  score = 0
+
+  dice.delete_if { |roll| roll.nil? }
+  
+  unless dice.empty?
+    dice              = dice[0..4]
+    element_in_set    = nil
+    removed_elements  = 0
+
+    # Look for a set of three or more numbers, remove the first three appearances from the array
+    dice.delete_if do |roll|
+      # Finding an element that appears three or more times
+      if element_in_set.nil? && dice.count(roll) >= 3
+        element_in_set = roll 
+      end
+
+      removed_elements += 1 if roll == element_in_set
+      
+      ( roll == element_in_set && removed_elements <= 3 )
+    end
+
+    unless element_in_set.nil?
+      score += case element_in_set
+        when 1 then 1000    
+        else element_in_set * 100
+      end
+    end
+
+    # Sum the rest of the numbers to the score
+    dice.each do |roll|
+      score += case roll
+        when 1 then 100
+        when 5 then 50
+        else 0
+      end
+    end
+  end
+  score
 end
 
 class AboutScoringProject < Neo::Koan
